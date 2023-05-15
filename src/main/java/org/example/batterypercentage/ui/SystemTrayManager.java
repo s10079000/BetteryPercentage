@@ -20,6 +20,10 @@ public class SystemTrayManager {
         }
 
         init();
+        batteryInformationUpdate();
+    }
+
+    private void batteryInformationUpdate(){
 
         Timer timer = new Timer(30000, e -> {
 
@@ -48,10 +52,25 @@ public class SystemTrayManager {
 
         trayIcon = new TrayIcon(NumberIconGenerator.generateNumberIcon(previousBatteryLifePercent));
 
+        setPopup();
+
         try {
             tray.add(trayIcon);
         } catch (AWTException e) {
             System.err.println("Could not add tray icon");
         }
+    }
+
+    private void setPopup(){
+
+        PopupMenu popup = new PopupMenu();
+        MenuItem exitItem = new MenuItem("exit");
+
+        exitItem.setFont(new Font("Microsoft JhengHei", Font.PLAIN, 20));
+        exitItem.addActionListener(e -> System.exit(0));
+
+        popup.add(exitItem);
+
+        trayIcon.setPopupMenu(popup);
     }
 }
